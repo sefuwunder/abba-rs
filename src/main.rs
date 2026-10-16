@@ -585,7 +585,14 @@ mod api_tests {
 
     fn bin() -> String {
         // CARGO_BIN_EXE_<name>: dashes become underscores
-        std::env::var("CARGO_BIN_EXE_abba_rs").unwrap_or_else(|_| "./target/debug/abba-rs".to_string())
+        let from_env = std::env::var("CARGO_BIN_EXE_abba_rs").ok();
+        let fallback = "./target/debug/abba-rs".to_string();
+        for cand in from_env.iter().chain(std::iter::once(&fallback)) {
+            if std::path::Path::new(cand).exists() {
+                return cand.clone();
+            }
+        }
+        panic!("abba-rs binary not found: run `cargo build` before `cargo test`");
     }
 
     struct Server {

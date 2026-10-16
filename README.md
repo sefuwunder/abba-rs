@@ -31,6 +31,7 @@ Same as the Bun original: notes CRUD (`GET/POST /api/notes`, `GET/PATCH/DELETE /
 ## Build
 
 ```bash
+cargo build       # the HTTP integration test spawns this binary
 cargo test        # 13 tests: mind unit tests + full HTTP integration test
 cargo build --release
 ```
